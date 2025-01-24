@@ -15,6 +15,9 @@
 (define-constant PRODUCT-STATUS-DELIVERED u3)
 (define-constant PRODUCT-STATUS-VERIFIED u4)
 
+;; Additional Error Constants
+(define-constant ERR-ALREADY-EXISTS (err u4))
+(define-constant ERR-NOT-FOUND (err u5))
 
 ;; Product Provenance Mapping
 (define-map product-provenance
@@ -98,4 +101,17 @@
 ;; Pausable Trait
 (define-trait pausable-trait
   ((is-paused () (response bool uint)))
+)
+
+;; Audit Log Entry Structure
+(define-map audit-logs
+  uint  ;; product-id
+  {
+    events: (list 50 {
+      event-type: (string-ascii 50),
+      timestamp: uint,
+      actor: principal,
+      details: (string-ascii 200)
+    })
+  }
 )
