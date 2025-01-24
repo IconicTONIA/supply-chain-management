@@ -78,3 +78,17 @@
   (map-get? product-ownership product-id)
 )
 
+;; New Mapping for Product Certifications
+(define-map product-certifications
+  uint
+  {
+    certifications: (list 10 (string-ascii 100)),
+    compliance-docs: (list 5 (string-ascii 100))
+  }
+)
+
+;; New Read-only Function
+(define-read-only (get-product-certifications (product-id uint))
+  (map-get? product-certifications product-id)
+)
+
