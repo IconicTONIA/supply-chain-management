@@ -115,3 +115,16 @@
     })
   }
 )
+
+;; Multi-Signature Approval Mapping
+(define-map multi-sig-approvals
+  {
+    product-id: uint,
+    approval-type: (string-ascii 50)
+  }
+  {
+    required-signatures: uint,
+    current-signatures: (list 10 principal),
+    is-approved: bool
+  }
+)
