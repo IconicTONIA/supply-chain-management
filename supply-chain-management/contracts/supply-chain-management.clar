@@ -159,3 +159,16 @@
   }
 )
 
+;; Regulatory Compliance Mapping
+(define-map regulatory-compliance
+  uint  ; product-id
+  {
+    compliance-standards: (list 10 (string-ascii 100)),
+    regulatory-checks: (list 10 {
+      check-name: (string-ascii 100),
+      status: bool,
+      timestamp: uint
+    })
+  }
+)
+
