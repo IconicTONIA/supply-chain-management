@@ -53,3 +53,28 @@
     status: uint
   })
 )
+
+;; Read-only Functions for Retrieving Product Information
+(define-read-only (get-product-details (product-id uint))
+  (map-get? product-provenance product-id)
+)
+
+(define-read-only (get-transportation-logs (product-id uint))
+  (map-get? transportation-logs product-id)
+)
+
+(define-read-only (get-product-verification-status (product-id uint))
+  (map-get? product-verifications product-id)
+)
+
+;; New Mapping for Product Ownership
+(define-map product-ownership
+  uint  ;; product-id
+  principal  ;; current owner
+)
+
+;; New Read-only Function
+(define-read-only (get-product-owner (product-id uint))
+  (map-get? product-ownership product-id)
+)
+
