@@ -205,3 +205,15 @@
   }
 )
 
+;; Notification Mapping
+(define-map notifications
+  principal
+  {
+    unread-notifications: (list 50 {
+      notification-type: (string-ascii 50),
+      message: (string-ascii 200),
+      timestamp: uint
+    })
+  }
+)
+
