@@ -194,3 +194,14 @@
   }
 )
 
+;; Contract Upgrade Proposal
+(define-map upgrade-proposals
+  principal  ;; proposer
+  {
+    new-contract-address: principal,
+    votes-for: (list 10 principal),
+    votes-against: (list 10 principal),
+    proposal-status: bool
+  }
+)
+
