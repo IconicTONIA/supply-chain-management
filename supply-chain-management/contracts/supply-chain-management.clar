@@ -67,18 +67,18 @@
   (map-get? product-verifications product-id)
 )
 
-;; New Mapping for Product Ownership
+;; Mapping for Product Ownership
 (define-map product-ownership
   uint  ;; product-id
   principal  ;; current owner
 )
 
-;; New Read-only Function
+;; Read-only Function
 (define-read-only (get-product-owner (product-id uint))
   (map-get? product-ownership product-id)
 )
 
-;; New Mapping for Product Certifications
+;; Mapping for Product Certifications
 (define-map product-certifications
   uint
   {
@@ -87,8 +87,15 @@
   }
 )
 
-;; New Read-only Function
+;; Read-only Function
 (define-read-only (get-product-certifications (product-id uint))
   (map-get? product-certifications product-id)
 )
 
+;; Contract-level Pause Variable
+(define-data-var contract-paused bool false)
+
+;; Pausable Trait
+(define-trait pausable-trait
+  ((is-paused () (response bool uint)))
+)
