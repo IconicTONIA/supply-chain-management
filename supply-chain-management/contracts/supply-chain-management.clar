@@ -128,3 +128,17 @@
     is-approved: bool
   }
 )
+
+;; Product Version Mapping
+(define-map product-versions
+  uint  ;; product-id
+  {
+    current-version: uint,
+    version-history: (list 20 {
+      version-number: uint,
+      version-details: (string-ascii 200),
+      timestamp: uint
+    })
+  }
+)
+
