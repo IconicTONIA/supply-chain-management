@@ -1,30 +1,6 @@
-
 ;; title: supply-chain-management
-;; version:
-;; summary:
-;; description:
-
-;; traits
-;;
-
-;; token definitions
-;;
-
-;; constants
-;;
-
-;; data vars
-;;
-
-;; data maps
-;;
-
-;; public functions
-;;
-
-;; read only functions
-;;
-
-;; private functions
-;;
-
+;; Constants and Error Definitions
+(define-constant CONTRACT-OWNER tx-sender)
+(define-constant ERR-UNAUTHORIZED (err u1))
+(define-constant ERR-INVALID-PRODUCT (err u2))
+(define-constant ERR-VERIFICATION-FAILED (err u3))
