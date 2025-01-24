@@ -142,3 +142,20 @@
   }
 )
 
+;; Stakeholder Roles Enum
+(define-constant ROLE-MANUFACTURER u1)
+(define-constant ROLE-TRANSPORTER u2)
+(define-constant ROLE-DISTRIBUTOR u3)
+(define-constant ROLE-REGULATOR u4)
+
+;; Stakeholder Mapping
+(define-map stakeholders
+  principal
+  {
+    name: (string-ascii 100),
+    role: uint,
+    approved: bool,
+    permissions: (list 10 uint)
+  }
+)
+
