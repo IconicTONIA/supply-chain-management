@@ -373,3 +373,78 @@
     (ok true)
   )
 )
+
+;; Vote on Governance Proposal
+(define-public (vote-on-proposal
+  (proposer principal)
+  (vote bool)
+)
+  (let ((current-proposal (unwrap! 
+        (map-get? governance-proposals proposer) 
+        ERR-NOT-FOUND)))
+    (asserts! (< stacks-block-height (get voting-end current-proposal)) ERR-UNAUTHORIZED)
+    (map-set governance-proposals 
+      proposer 
+      (merge current-proposal 
+        {
+          votes-for: (if vote 
+                        (+ (get votes-for current-proposal) u1)
+                        (get votes-for current-proposal)),
+          votes-against: (if (not vote)
+                             (+ (get votes-against current-proposal) u1)
+                             (get votes-against current-proposal))
+        }
+      )
+    )
+    (ok true)
+  )
+)
+
+;; Send Notification
+(define-public (send-notification
+  (recipient principal)
+  (notification-type (string-ascii 50))
+  (message (string-ascii 500))
+)
+  (let ((notification-id (default-to u0 (some (fold + (list u1 u2 u3) u0)))))
+    (match (map-get? user-notifications recipient)
+      existing-notifications
+        (map-set user-notifications 
+          recipient 
+          {
+            notifications: (unwrap-panic 
+              (as-max-len? 
+                (append (get notifications existing-notifications) 
+                  {
+                    id: notification-id,
+                    type: notification-type,
+                    message: message,
+                    timestamp: stacks-block-height,
+                    read-status: false
+                  }
+                ) 
+                u50
+              )
+            ),
+            unread-count: (+ (get unread-count existing-notifications) u1)
+          }
+        )
+      
+      ;; If no existing notifications
+      (map-set user-notifications 
+        recipient 
+        {
+          notifications: (list {
+            id: notification-id,
+            type: notification-type,
+            message: message,
+            timestamp: stacks-block-height,
+            read-status: false
+          }),
+          unread-count: u1
+        }
+      )
+    )
+    (ok notification-id)
+  )
+)
