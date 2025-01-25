@@ -238,3 +238,30 @@
     transaction-hash: (string-ascii 100)
   }
 )
+
+;; Advanced Fee Structure
+(define-map transaction-fee-structure
+  {
+    transaction-type: (string-ascii 50),
+    product-category: uint
+  }
+  {
+    base-fee: uint,
+    percentage-fee: uint,
+    dynamic-multiplier: uint
+  }
+)
+
+;; Governance Proposal Mechanism
+(define-map governance-proposals
+  principal  ;; proposal creator
+  {
+    proposal-type: (string-ascii 50),
+    proposed-changes: (string-ascii 500),
+    voting-start: uint,
+    voting-end: uint,
+    votes-for: uint,
+    votes-against: uint,
+    status: uint
+  }
+)
