@@ -291,3 +291,40 @@
     last-performance-update: uint
   }
 )
+
+;; Assign Role to User
+(define-public (assign-user-role 
+  (user principal) 
+  (role uint) 
+  (permissions (list 10 uint))
+)
+  (begin
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
+    (map-set user-roles user {
+      role: role,
+      permissions: permissions
+    })
+    (ok true)
+  )
+)
+
+;; Create Comprehensive Audit Entry
+(define-public (log-comprehensive-audit 
+  (event-type (string-ascii 50))
+  (details (string-ascii 500))
+  (transaction-hash (string-ascii 100))
+)
+  (let ((audit-id (default-to u0 (some (fold + (list u1 u2 u3) u0)))))
+    (map-set comprehensive-audit-log 
+      audit-id 
+      {
+        timestamp: stacks-block-height,
+        event-type: event-type,
+        actor: tx-sender,
+        details: details,
+        transaction-hash: transaction-hash
+      }
+    )
+    (ok audit-id)
+  )
+)
