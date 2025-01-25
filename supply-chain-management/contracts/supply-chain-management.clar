@@ -328,3 +328,48 @@
     (ok audit-id)
   )
 )
+
+;; Calculate Transaction Fees
+(define-read-only (calculate-transaction-fee
+  (transaction-type (string-ascii 50))
+  (product-category uint)
+  (transaction-amount uint)
+)
+  (match (map-get? transaction-fee-structure 
+          {
+            transaction-type: transaction-type, 
+            product-category: product-category
+          })
+    fee-structure 
+      (let ((base-fee (get base-fee fee-structure))
+            (percentage-fee (get percentage-fee fee-structure))
+            (dynamic-multiplier (get dynamic-multiplier fee-structure)))
+        (some (+ base-fee 
+                 (* transaction-amount percentage-fee) 
+                 (* base-fee dynamic-multiplier))))
+    none
+  )
+)
+
+;; Create Governance Proposal
+(define-public (create-governance-proposal
+  (proposal-type (string-ascii 50))
+  (proposed-changes (string-ascii 500))
+)
+  (begin
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
+    (map-set governance-proposals 
+      tx-sender 
+      {
+        proposal-type: proposal-type,
+        proposed-changes: proposed-changes,
+        voting-start: stacks-block-height,
+        voting-end: (+ stacks-block-height u100),
+        votes-for: u0,
+        votes-against: u0,
+        status: u1  ;; Active
+      }
+    )
+    (ok true)
+  )
+)
