@@ -265,3 +265,29 @@
     status: uint
   }
 )
+
+;; Comprehensive Notification Mechanism
+(define-map user-notifications
+  principal
+  {
+    notifications: (list 50 {
+      id: uint,
+      type: (string-ascii 50),
+      message: (string-ascii 500),
+      timestamp: uint,
+      read-status: bool
+    }),
+    unread-count: uint
+  }
+)
+
+;; Stakeholder Performance Tracking
+(define-map stakeholder-reputation
+  principal
+  {
+    total-transactions: uint,
+    successful-transactions: uint,
+    reputation-score: uint,
+    last-performance-update: uint
+  }
+)
